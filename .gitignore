@@ -1,0 +1,15 @@
+build/
+*.o
+*.obj
+*.a
+*.lib
+*.dll
+*.exe
+*.exp
+*.pdb
+*.ilk
+*.log
+.vs/
+.vscode/
+.idea/
+*.user
