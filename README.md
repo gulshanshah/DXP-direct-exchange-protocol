@@ -1,5 +1,7 @@
 # DXP — Direct Exchange Protocol
 
+[![CI](https://github.com/gulshanshah/DXP-direct-exchange-protocol/actions/workflows/ci.yml/badge.svg)](https://github.com/gulshanshah/DXP-direct-exchange-protocol/actions/workflows/ci.yml)
+
 A small C++17 library for building reliable, optionally encrypted packet exchange
 over any byte stream (serial, socket, radio, or an in-memory test transport).
 
