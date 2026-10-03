@@ -9,7 +9,7 @@ jobs:
     name: Linux (GCC, release + sanitizers)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Build and test
         run: bash build.sh
       - name: Build and test with ASan/UBSan
@@ -19,7 +19,12 @@ jobs:
     name: Windows (MSVC)
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Build and test
         shell: cmd
-        run: build.bat
+        run: |
+          call build.bat > build_log.txt 2>&1
+          set ERR=%errorlevel%
+          type build_log.txt
+          if not "%ERR%"=="0" powershell -NoProfile -ExecutionPolicy Bypass -Command "$t = Get-Content build_log.txt -Tail 40 -ErrorAction SilentlyContinue; if ($t) { Write-Host ('::error::' + ($t -join '%%0A')) }"
+          exit /b %ERR%
