@@ -68,6 +68,7 @@ if errorlevel 1 exit /b 1
 build\demo.exe
 if errorlevel 1 exit /b 1
 call :copy_package
+if errorlevel 1 exit /b 1
 cl %MSVCLINK% /Ibuild\include /Fobuild\example\example.obj /Fe:build\example\example.exe build\example\example.cpp build\lib\dxp.lib
 if errorlevel 1 exit /b 1
 build\example\example.exe
@@ -89,6 +90,7 @@ if errorlevel 1 exit /b 1
 build\demo.exe
 if errorlevel 1 exit /b 1
 call :copy_package
+if errorlevel 1 exit /b 1
 g++ %GNUTOOLS% -Ibuild/include build/example/example.cpp build/lib/libdxp.a -o build/example/example.exe %GNULINK% -lbcrypt
 if errorlevel 1 exit /b 1
 build\example\example.exe
@@ -104,6 +106,17 @@ exit /b %errorlevel%
 :copy_package
 mkdir build\include 2>nul
 mkdir build\example 2>nul
-copy /y %HEADERS% build\include\ >nul
+for %%f in (%HEADERS%) do (
+    copy /y %%f build\include\ >nul
+    if not exist build\include\%%f (
+        echo copy_package FAILED: build\include\%%f not produced
+        exit /b 1
+    )
+)
 copy /y example.cpp build\example\ >nul
+if not exist build\example\example.cpp (
+    echo copy_package FAILED: build\example\example.cpp not produced
+    exit /b 1
+)
+dir /b build\include
 exit /b 0
